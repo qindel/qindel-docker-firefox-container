@@ -26,8 +26,11 @@ RUN apt-get update; apt-get -y upgrade ; apt-get install -y sudo firefox flashpl
 RUN apt-get autoremove -y;  apt-get clean
 # CMD
 ENV USER=firefox GROUP=firefox UIDNUM=1000 GIDNUM=1000 USERHOME=/home/firefox DISPLAY=:0
+ENV PULSESOCKET=/run/user/$UIDNUM/pulse/native
+ENV PULSE_SERVER=unix:$PULSESOCKET
 VOLUME ["/home/firefox"]
 VOLUME ["/tmp/.X11-unix"]
+VOLUME [$PULSESOCKET]
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
