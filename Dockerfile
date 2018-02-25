@@ -21,17 +21,18 @@ LABEL version="1.0"
 LABEL description="This is firefox container from an Ubuntu VM"
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN echo "deb http://archive.canonical.com/ubuntu xenial partner" > /etc/apt/sources.list.d/partners.list;  echo "deb http://archive.ubuntu.com/ubuntu/ xenial multiverse" > /etc/apt/sources.list.d/multiverse.list;  echo "deb http://archive.ubuntu.com/ubuntu/ xenial-backports main restricted universe multiverse" > /etc/apt/sources.list.d/backports.list;  echo "deb http://security.ubuntu.com/ubuntu/ xenial-security main restricted universe multiverse " > /etc/apt/sources.list.d/security.list;  
-RUN apt-get update; apt-get -y upgrade ; apt-get install -y sudo firefox flashplugin-installer
-RUN apt-get autoremove -y;  apt-get clean
+RUN echo "deb http://archive.canonical.com/ubuntu xenial partner" > /etc/apt/sources.list.d/partners.list; apt-get update; apt-get -y upgrade ; apt-get install -y sudo firefox flashplugin-installer telnet iproute2; apt-get autoremove -y; apt-get clean
+# libgl1-mesa-glx dbus-x11
 # CMD
-ENV USER=firefox GROUP=firefox UIDNUM=1000 GIDNUM=1000 USERHOME=/home/firefox DISPLAY=:0
-ENV PULSESOCKET=/run/user/$UIDNUM/pulse/native
+ENV USER=firefox GROUP=firefox UIDNUM=10000 GIDNUM=10000 USERHOME=/home/firefox DISPLAY=:0
+ENV PULSESOCKETDIR=/run/user/$UIDNUM/pulse
+ENV PULSESOCKET=$PULSESOCKETDIR/native
 ENV PULSE_SERVER=unix:$PULSESOCKET
+ENV ARGUMENTS=
 VOLUME ["/home/firefox"]
 VOLUME ["/tmp/.X11-unix"]
 VOLUME [$PULSESOCKET]
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod 755 /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/entrypoint.sh"]
 
