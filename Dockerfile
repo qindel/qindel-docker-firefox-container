@@ -14,14 +14,14 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 MAINTAINER The QVD <docker@theqvd.com>
 
 LABEL version="1.0"
 LABEL description="This is firefox container from an Ubuntu VM"
 
 ENV DEBIAN_FRONTEND noninteractive
-RUN echo "deb http://archive.canonical.com/ubuntu xenial partner" > /etc/apt/sources.list.d/partners.list; apt-get update; apt-get -y upgrade ; apt-get install -y sudo firefox flashplugin-installer telnet iproute2; apt-get autoremove -y; apt-get clean
+RUN echo "deb http://archive.canonical.com/ubuntu xenial partner" > /etc/apt/sources.list.d/partners.list; apt-get update; apt-get -y upgrade ; apt-get install -y sudo firefox flashplugin-installer telnet iproute2 dbus-x11; apt-get autoremove -y; apt-get clean
 # libgl1-mesa-glx dbus-x11
 # CMD
 ENV USER=firefox GROUP=firefox UIDNUM=10000 GIDNUM=10000 USERHOME=/home/firefox DISPLAY=:0
